@@ -1,17 +1,12 @@
-name: Deploy to GitHub Pages
+      - name: Build the site
+        run: pnpm run build
 
-on:
-  push:
-    branches: [main]
+      - name: Create .nojekyll file
+        run: touch ./dist/.nojekyll
 
-permissions:
-  contents: write
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: withastro/action@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          deploy-branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
